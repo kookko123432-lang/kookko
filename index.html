@@ -1,0 +1,643 @@
+<!DOCTYPE html>
+<html lang="en" data-lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>KOOKKO</title>
+<meta name="description" content="KOOKKO is an independent software studio building AI-powered consumer apps: Karaoke Party, StickerAI, NexusTask AI, and Sleep Master. Founded February 2025.">
+<meta property="og:title" content="KOOKKO — AI-powered consumer apps">
+<meta property="og:description" content="An independent studio shipping four AI-powered consumer apps. Founded February 2025.">
+<meta property="og:type" content="website">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3E%3Ccircle cx='15' cy='15' r='14' fill='%23FF6B57'/%3E%3Ccircle cx='14' cy='13.5' r='7.5' fill='%23FFFDF8'/%3E%3Ccircle cx='16.4' cy='12.2' r='1.7' fill='%2323264A'/%3E%3Cpath d='M21.5 13.5 L27 15.5 L21.5 17.5 Z' fill='%23FFC53D'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700;800&family=Nunito:wght@400;600;700;800&family=Noto+Sans+TC:wght@400;500;700;900&display=swap" rel="stylesheet">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Organization",
+  "name": "KOOKKO",
+  "url": "https://kookko123432-lang.github.io/kookko/",
+  "foundingDate": "2025-02",
+  "email": "kookko123432@karaokeparty.vip",
+  "sameAs": ["https://github.com/kookko123432-lang"]
+}
+</script>
+<style>
+/* ============================================================
+   KOOKKO site tokens
+   Layout concept: a bright toy shelf — four real products,
+   each wearing its own brand colour, laid out playfully on paper.
+   ============================================================ */
+:root {
+  --bg:         #FFFDF8;
+  --surface:    #FFFFFF;
+  --ink:        #23264A;
+  --ink-soft:   #646A8F;
+  --line:       #ECE7DB;
+  --accent:     #FF6B57;   /* coral — the KOOKKO beak */
+  --on-accent:  #FFFFFF;
+  --accent-ink: #8F2A1B;
+  --green:  #06C755;   /* StickerAI */
+  --pink:   #FF3DA6;   /* Karaoke Party */
+  --teal:   #0D9488;   /* NexusTask */
+  --indigo: #6366F1;   /* Sleep Master */
+  --sun:    #FFC53D;
+  --panel:      #23264A;   /* contact panel: always deep navy, both themes */
+  --panel-fg:   #FFFDF8;
+  --pill-live-ink: #0A8A3E;
+  --pill-dev-ink:  #9A6C00;
+  --shadow: 0 2px 4px rgba(35,38,74,.06), 0 12px 28px rgba(35,38,74,.09);
+  --r-m: 18px; --r-l: 26px;
+  --font-display: 'Baloo 2', 'Noto Sans TC', 'PingFang TC', sans-serif;
+  --font-body: 'Nunito', 'Noto Sans TC', 'PingFang TC', sans-serif;
+  color-scheme: light;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg:        #191C32;
+    --surface:   #222645;
+    --ink:       #F1F0FA;
+    --ink-soft:  #A9ADD0;
+    --line:      #2E3356;
+    --accent:    #FF8472;
+    --on-accent: #23264A;
+    --accent-ink:#FFD9CF;
+    --green:  #2BD97E;
+    --pink:   #FF67BC;
+    --teal:   #2CC4B4;
+    --indigo: #8F92FF;
+    --sun:    #FFCF5C;
+    --pill-live-ink: #6FE3A5;
+    --pill-dev-ink:  #FFCF5C;
+    --shadow: 0 2px 4px rgba(0,0,0,.35), 0 14px 30px rgba(0,0,0,.30);
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg:        #191C32;
+  --surface:   #222645;
+  --ink:       #F1F0FA;
+  --ink-soft:  #A9ADD0;
+  --line:      #2E3356;
+  --accent:    #FF8472;
+  --on-accent: #23264A;
+  --accent-ink:#FFD9CF;
+  --green:  #2BD97E;
+  --pink:   #FF67BC;
+  --teal:   #2CC4B4;
+  --indigo: #8F92FF;
+  --sun:    #FFCF5C;
+  --pill-live-ink: #6FE3A5;
+  --pill-dev-ink:  #FFCF5C;
+  --shadow: 0 2px 4px rgba(0,0,0,.35), 0 14px 30px rgba(0,0,0,.30);
+  color-scheme: dark;
+}
+
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--ink);
+  font-family: var(--font-body);
+  font-size: 17px;
+  line-height: 1.65;
+  -webkit-font-smoothing: antialiased;
+}
+img, svg { max-width: 100%; }
+
+/* language switching: both texts live in the DOM, CSS picks one.
+   EN is the default even before JS sets data-lang. */
+html:not([data-lang="zh"]) .zh { display: none; }
+html[data-lang="zh"] .en { display: none; }
+
+.wrap { max-width: 1060px; margin-inline: auto; padding-inline: 20px; }
+
+/* ---------- header ---------- */
+header {
+  position: sticky; top: 0; z-index: 50;
+  background: color-mix(in srgb, var(--bg) 88%, transparent);
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid var(--line);
+}
+.bar { display: flex; align-items: center; gap: 18px; padding-block: 12px; }
+.logo {
+  display: inline-flex; align-items: center; gap: 9px;
+  font-family: var(--font-display); font-weight: 800;
+  font-size: 24px; letter-spacing: .02em; text-decoration: none;
+}
+.logo svg { flex: none; }
+nav { margin-left: auto; display: flex; align-items: center; gap: 4px; flex-wrap: wrap; }
+nav a.navlink {
+  text-decoration: none; font-weight: 700; font-size: 15px;
+  color: var(--ink-soft); padding: 7px 12px; border-radius: 999px;
+}
+nav a.navlink:hover { color: var(--ink); background: color-mix(in srgb, var(--accent) 12%, transparent); }
+.langtoggle {
+  display: inline-flex; border: 1.5px solid var(--line); border-radius: 999px;
+  overflow: hidden; margin-left: 6px; background: var(--surface);
+}
+.langtoggle button {
+  border: 0; background: transparent; color: var(--ink-soft);
+  font-family: var(--font-body); font-weight: 800; font-size: 13.5px;
+  padding: 6px 13px; cursor: pointer;
+}
+.langtoggle button[aria-pressed="true"] { background: var(--ink); color: var(--bg); }
+:focus-visible { outline: 3px solid var(--accent); outline-offset: 2px; border-radius: 6px; }
+
+/* ---------- hero ---------- */
+.hero-grid { display: grid; grid-template-columns: minmax(0,1.05fr) minmax(0,.95fr); gap: 44px; align-items: center; }
+.eyebrow {
+  display: inline-flex; align-items: center; gap: 9px;
+  font-weight: 800; font-size: 13.5px; letter-spacing: .04em;
+  color: var(--accent-ink);
+  background: color-mix(in srgb, var(--accent) 14%, var(--surface));
+  border: 1.5px solid color-mix(in srgb, var(--accent) 34%, transparent);
+  padding: 6px 14px; border-radius: 999px;
+}
+.eyebrow .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--accent); flex: none; }
+h1 {
+  font-family: var(--font-display);
+  font-size: clamp(38px, 6vw, 60px);
+  line-height: 1.12; font-weight: 800;
+  margin: 18px 0 0; text-wrap: balance;
+}
+h1 .pop { color: var(--accent); }
+.lede { font-size: 19px; color: var(--ink-soft); margin: 16px 0 0; max-width: 46ch; }
+.lede strong { color: var(--ink); font-weight: 800; }
+.stats { display: flex; gap: 26px; margin-top: 26px; flex-wrap: wrap; }
+.stat b { font-family: var(--font-display); font-size: 27px; font-weight: 800; display: block; line-height: 1.1; }
+.stat span { font-size: 13.5px; font-weight: 700; color: var(--ink-soft); letter-spacing: .02em; }
+.ctas { display: flex; gap: 12px; margin-top: 28px; flex-wrap: wrap; }
+.btn {
+  display: inline-flex; align-items: center; gap: 8px;
+  text-decoration: none; font-weight: 800; font-size: 16px;
+  padding: 12px 22px; border-radius: 999px;
+  transition: transform .15s ease, box-shadow .15s ease;
+}
+.btn:hover { transform: translateY(-2px); }
+.btn-primary { background: var(--accent); color: var(--on-accent); box-shadow: 0 6px 16px color-mix(in srgb, var(--accent) 40%, transparent); }
+.btn-ghost { border: 2px solid var(--ink); color: var(--ink); }
+
+/* hero product shelf */
+.shelf { position: relative; padding-block: 18px; }
+.tile {
+  background: var(--surface); border: 1.5px solid var(--line);
+  border-radius: var(--r-m); box-shadow: var(--shadow);
+  padding: 15px 18px; display: flex; align-items: center; gap: 13px;
+  margin-inline: auto; max-width: 370px;
+}
+.tile + .tile { margin-top: 14px; }
+.glyph {
+  flex: none; width: 44px; height: 44px; border-radius: 13px;
+  display: grid; place-items: center; color: #fff;
+}
+.glyph svg { width: 24px; height: 24px; }
+.tile .tname { font-weight: 800; font-size: 16.5px; line-height: 1.25; }
+.tile .tsub { font-size: 13px; color: var(--ink-soft); font-weight: 600; }
+.tile .state { margin-left: auto; flex: none; }
+.shelf .tile:nth-child(1) { transform: rotate(-2deg); }
+.shelf .tile:nth-child(2) { transform: rotate(1.6deg) translateX(10px); }
+.shelf .tile:nth-child(3) { transform: rotate(-1.2deg); }
+.shelf .tile:nth-child(4) { transform: rotate(2.2deg) translateX(8px); }
+.shelf .tile:hover { transform: rotate(0deg) translateY(-3px); transition: transform .18s ease; }
+
+/* ---------- section chrome ---------- */
+section { padding-block: 58px; scroll-margin-top: 76px; }
+.kicker {
+  font-family: var(--font-display); font-weight: 700;
+  color: var(--accent); font-size: 16px; letter-spacing: .05em;
+  text-transform: uppercase; margin: 0 0 6px;
+}
+h2 {
+  font-family: var(--font-display); font-weight: 800;
+  font-size: clamp(28px, 4vw, 40px); line-height: 1.2;
+  margin: 0 0 12px; text-wrap: balance;
+}
+.section-note { color: var(--ink-soft); max-width: 62ch; margin: 0 0 34px; }
+.rule { border: 0; border-top: 1.5px solid var(--line); margin: 0; }
+
+/* ---------- products ---------- */
+.grid-products { display: grid; grid-template-columns: repeat(2, minmax(0,1fr)); gap: 20px; }
+.card {
+  background: var(--surface); border: 1.5px solid var(--line);
+  border-radius: var(--r-l); padding: 26px 26px 24px;
+  display: flex; flex-direction: column; gap: 12px;
+  position: relative; overflow: hidden;
+  transition: transform .18s ease, box-shadow .18s ease;
+}
+.card:hover { transform: translateY(-4px); box-shadow: var(--shadow); }
+.card .rail { position: absolute; inset: 0 0 auto 0; height: 7px; }
+.card-head { display: flex; align-items: center; gap: 12px; margin-top: 6px; }
+.card .glyph { width: 46px; height: 46px; border-radius: 14px; }
+.card .glyph svg { width: 25px; height: 25px; }
+.card h3 { font-family: var(--font-display); font-weight: 800; font-size: 21.5px; margin: 0; line-height: 1.25; }
+.card .alt-name { font-size: 13.5px; font-weight: 700; color: var(--ink-soft); }
+.card p { margin: 0; color: var(--ink-soft); font-size: 15.5px; }
+.card p b { color: var(--ink); }
+.chips { display: flex; gap: 7px; flex-wrap: wrap; }
+.chip {
+  font-size: 12.5px; font-weight: 700;
+  color: var(--ink-soft); border: 1.5px solid var(--line);
+  border-radius: 999px; padding: 3px 10px; background: var(--bg);
+}
+.card-foot { margin-top: auto; display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
+.pill {
+  display: inline-flex; align-items: center; gap: 7px;
+  font-size: 12.5px; font-weight: 800; letter-spacing: .03em;
+  border-radius: 999px; padding: 5px 12px;
+}
+.pill::before { content: ""; width: 8px; height: 8px; border-radius: 50%; background: currentColor; }
+.pill-live { color: var(--pill-live-ink); background: color-mix(in srgb, var(--green) 16%, var(--surface)); }
+.pill-dev  { color: var(--pill-dev-ink); background: color-mix(in srgb, var(--sun) 30%, var(--surface)); }
+.card a.golive {
+  margin-left: auto; text-decoration: none; font-weight: 800; font-size: 14.5px;
+  color: var(--ink); border-bottom: 2px solid var(--accent); padding-bottom: 2px;
+  white-space: nowrap; min-width: 0; overflow-wrap: anywhere;
+}
+.card a.golive:hover { color: var(--accent); }
+.card .devnote { margin-left: auto; font-size: 13px; font-weight: 700; color: var(--ink-soft); }
+
+/* ---------- studio ---------- */
+.studio-grid { display: grid; grid-template-columns: repeat(3, minmax(0,1fr)); gap: 20px; }
+.studio-item { padding: 22px 22px 20px; border-radius: var(--r-l); background: var(--surface); border: 1.5px solid var(--line); }
+.studio-item .glyph {
+  background: color-mix(in srgb, var(--accent) 14%, var(--surface)); color: var(--accent); margin-bottom: 12px;
+  width: 42px; height: 42px; border-radius: 12px;
+}
+.studio-item .glyph svg { width: 22px; height: 22px; }
+.studio-item h3 { font-family: var(--font-display); font-size: 18.5px; font-weight: 800; margin: 0 0 6px; }
+.studio-item p { margin: 0; color: var(--ink-soft); font-size: 15px; }
+
+/* ---------- roadmap ---------- */
+.roadmap { display: grid; gap: 14px; max-width: 760px; }
+.step {
+  display: flex; gap: 16px; align-items: flex-start;
+  background: var(--surface); border: 1.5px solid var(--line);
+  border-radius: var(--r-m); padding: 18px 20px;
+}
+.step .when {
+  flex: none; font-family: var(--font-display); font-weight: 700; font-size: 13.5px;
+  color: var(--accent-ink); background: color-mix(in srgb, var(--accent) 12%, transparent);
+  border-radius: 999px; padding: 5px 13px; margin-top: 2px; letter-spacing: .02em;
+}
+.step p { margin: 0; color: var(--ink-soft); font-size: 15.5px; }
+.step p b { color: var(--ink); }
+
+/* ---------- contact / footer ---------- */
+.contact-box {
+  background: var(--panel); color: var(--panel-fg);
+  border-radius: var(--r-l); padding: 46px 40px; text-align: center;
+}
+.contact-box p { color: color-mix(in srgb, var(--panel-fg) 78%, transparent); margin: 0 auto 22px; max-width: 52ch; }
+.mailrow {
+  display: inline-flex; align-items: center; gap: 12px; flex-wrap: wrap; justify-content: center;
+  background: color-mix(in srgb, var(--panel-fg) 12%, transparent);
+  border-radius: 999px; padding: 10px 12px 10px 22px;
+}
+.mailrow a { color: var(--panel-fg); font-weight: 800; text-decoration: none; border-bottom: 2px solid var(--accent); }
+.mailrow a:hover { color: var(--accent); }
+.copybtn {
+  border: 0; border-radius: 999px; padding: 7px 15px; cursor: pointer;
+  font-family: var(--font-body); font-weight: 800; font-size: 13.5px;
+  background: var(--accent); color: var(--on-accent);
+}
+footer { padding-block: 34px 44px; }
+.footbar { display: flex; align-items: center; gap: 18px; flex-wrap: wrap; color: var(--ink-soft); font-size: 14px; font-weight: 600; }
+.footbar a { text-decoration: none; color: var(--ink-soft); border-bottom: 1.5px solid var(--line); }
+.footbar a:hover { color: var(--accent); }
+.footbar .cc { margin-left: auto; }
+
+/* ---------- responsive ---------- */
+@media (max-width: 860px) {
+  .hero-grid { grid-template-columns: 1fr; gap: 30px; }
+  .shelf { max-width: 400px; }
+  .grid-products { grid-template-columns: 1fr; }
+  .studio-grid { grid-template-columns: 1fr; }
+  nav a.navlink { display: none; }
+  .contact-box { padding: 36px 22px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after { transition: none !important; animation: none !important; }
+}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap bar">
+    <a class="logo" href="#top" aria-label="KOOKKO home">
+      <svg width="30" height="30" viewBox="0 0 30 30" aria-hidden="true">
+        <circle cx="15" cy="15" r="14" fill="var(--accent)"/>
+        <circle cx="14" cy="13.5" r="7.5" fill="var(--bg)"/>
+        <circle cx="16.4" cy="12.2" r="1.7" fill="var(--ink)"/>
+        <path d="M21.5 13.5 L27 15.5 L21.5 17.5 Z" fill="var(--sun)"/>
+        <path d="M9 8 Q6 3 9.5 2.5" stroke="var(--accent)" stroke-width="2" fill="none" stroke-linecap="round"/>
+      </svg>
+      <span>KOOKKO</span>
+    </a>
+    <nav aria-label="Main">
+      <a class="navlink" href="#products"><span class="en">Products</span><span class="zh">產品</span></a>
+      <a class="navlink" href="#studio"><span class="en">Studio</span><span class="zh">工作室</span></a>
+      <a class="navlink" href="#roadmap"><span class="en">Roadmap</span><span class="zh">後續計畫</span></a>
+      <a class="navlink" href="#contact"><span class="en">Contact</span><span class="zh">聯絡</span></a>
+      <span class="langtoggle" role="group" aria-label="Language 語言">
+        <button id="btn-en" aria-pressed="true">EN</button>
+        <button id="btn-zh" aria-pressed="false">中文</button>
+      </span>
+    </nav>
+  </div>
+</header>
+
+<main id="top">
+
+  <!-- ================= HERO ================= -->
+  <section class="hero wrap" style="padding-block: 62px 50px;">
+    <div class="hero-grid">
+      <div>
+        <span class="eyebrow"><span class="dot"></span>
+          <span class="en">Independent software studio · est. Feb 2025</span>
+          <span class="zh">獨立軟體工作室・成立於 2025 年 2 月</span>
+        </span>
+        <h1>
+          <span class="en">One founder.<br>Four apps.<br><span class="pop">AI does the heavy lifting.</span></span>
+          <span class="zh">一位創辦人。<br>四款產品。<br><span class="pop">最重的活，交給 AI。</span></span>
+        </h1>
+        <p class="lede">
+          <span class="en">KOOKKO builds <strong>AI-powered consumer apps</strong> across music, chat stickers, productivity and sleep health — shipped, running, and monetizable.</span>
+          <span class="zh">KOOKKO 專注打造<strong> AI 消費型應用</strong>，橫跨音樂、聊天貼圖、生產力與睡眠健康——能出貨、跑得動，也能收錢。</span>
+        </p>
+        <div class="stats">
+          <div class="stat"><b>4</b><span class="en">products built</span><span class="zh">款產品</span></div>
+          <div class="stat"><b>3</b><span class="en">live right now</span><span class="zh">款已上線</span></div>
+          <div class="stat"><b>2025</b><span class="en">founded</span><span class="zh">年成立</span></div>
+        </div>
+        <div class="ctas">
+          <a class="btn btn-primary" href="#products"><span class="en">See the products</span><span class="zh">看看產品</span></a>
+          <a class="btn btn-ghost" href="#studio"><span class="en">How we build</span><span class="zh">我們怎麼做</span></a>
+        </div>
+      </div>
+      <div class="shelf" aria-hidden="true">
+        <div class="tile">
+          <span class="glyph" style="background:var(--pink)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3a3 3 0 0 1 3 3v6a3 3 0 0 1-6 0V6a3 3 0 0 1 3-3z"/><path d="M6 11a6 6 0 0 0 12 0"/><path d="M12 17v4"/></svg></span>
+          <div><div class="tname">Karaoke Party</div><div class="tsub">用手機點歌的卡拉 OK</div></div>
+          <span class="pill pill-live state">Live</span>
+        </div>
+        <div class="tile">
+          <span class="glyph" style="background:var(--green)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M8.5 14a4 4 0 0 0 7 0"/><circle cx="9" cy="10" r=".6" fill="currentColor"/><circle cx="15" cy="10" r=".6" fill="currentColor"/></svg></span>
+          <div><div class="tname">StickerAI</div><div class="tsub">LINE 貼圖生成器</div></div>
+          <span class="pill pill-live state">Live</span>
+        </div>
+        <div class="tile">
+          <span class="glyph" style="background:var(--teal)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="4" width="16" height="16" rx="4"/><path d="M9 12l2 2 4-5"/></svg></span>
+          <div><div class="tname">NexusTask AI</div><div class="tsub">AI 待辦事項助手</div></div>
+          <span class="pill pill-live state">Live</span>
+        </div>
+        <div class="tile">
+          <span class="glyph" style="background:var(--indigo)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.5 14.5A8.5 8.5 0 0 1 9.5 3.5a8.5 8.5 0 1 0 11 11z"/></svg></span>
+          <div><div class="tname">Sleep Master</div><div class="tsub">睡眠大師 · Restwave</div></div>
+          <span class="pill pill-dev state">In dev</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="wrap"><hr class="rule"></div>
+
+  <!-- ================= PRODUCTS ================= -->
+  <section id="products" class="wrap">
+    <p class="kicker"><span class="en">What we've shipped</span><span class="zh">我們做出來的東西</span></p>
+    <h2>
+      <span class="en">Four products, each serving real users</span>
+      <span class="zh">四款產品，每一款都面向真實用戶</span>
+    </h2>
+    <p class="section-note">
+      <span class="en">Three are live on the web today; Karaoke Party already charges through Stripe. The fourth — our flagship — is in late development.</span>
+      <span class="zh">其中三款已經在線上運行；卡拉 OK 派對已透過 Stripe 提供付費方案。第四款是我們的主力產品，目前處於開發後期。</span>
+    </p>
+
+    <div class="grid-products">
+
+      <article class="card">
+        <span class="rail" style="background:var(--pink)"></span>
+        <div class="card-head">
+          <span class="glyph" style="background:var(--pink)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3a3 3 0 0 1 3 3v6a3 3 0 0 1-6 0V6a3 3 0 0 1 3-3z"/><path d="M6 11a6 6 0 0 0 12 0"/><path d="M12 17v4"/></svg></span>
+          <div>
+            <h3>Karaoke Party</h3>
+            <div class="alt-name"><span class="en">卡拉 OK 派對</span><span class="zh">主打線上的 KTV</span></div>
+          </div>
+        </div>
+        <p>
+          <span class="en"><b>Turn any screen into a KTV.</b> Guests scan a QR code, request songs from their phones, and lyrics sync to the big screen — with vocal-removal mode, live rooms, and Stripe checkout.</span>
+          <span class="zh"><b>任何螢幕都能變成 KTV。</b>朋友掃描 QR Code 就能用手機點歌，歌詞同步投到大螢幕——支援去人聲模式、即時房間與線上收款。</span>
+        </p>
+        <div class="chips"><span class="chip">Next.js</span><span class="chip">PartyKit</span><span class="chip">Supabase</span><span class="chip">Stripe</span></div>
+        <div class="card-foot">
+          <span class="pill pill-live">Live</span>
+          <a class="golive" href="https://karaokeparty.vip" target="_blank" rel="noopener">karaokeparty.vip ↗</a>
+        </div>
+      </article>
+
+      <article class="card">
+        <span class="rail" style="background:var(--green)"></span>
+        <div class="card-head">
+          <span class="glyph" style="background:var(--green)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M8.5 14a4 4 0 0 0 7 0"/><circle cx="9" cy="10" r=".6" fill="currentColor"/><circle cx="15" cy="10" r=".6" fill="currentColor"/></svg></span>
+          <div>
+            <h3>StickerAI</h3>
+            <div class="alt-name"><span class="en">LINE 貼圖生成器</span><span class="zh">一句話，套圖一分鐘完成</span></div>
+          </div>
+        </div>
+        <p>
+          <span class="en"><b>Type a caption, get a LINE sticker.</b> AI draws the character, removes the background, and exports the whole pack ready for the LINE Creator Market.</span>
+          <span class="zh"><b>打一句話，就出一張貼圖。</b>AI 生成角色圖、自動去背，整包依 LINE 創作者市集規格直接輸出。</span>
+        </p>
+        <div class="chips"><span class="chip">React</span><span class="chip">Firebase</span><span class="chip">Generative AI</span></div>
+        <div class="card-foot">
+          <span class="pill pill-live">Live</span>
+          <a class="golive" href="https://stickerai-line-generator.vercel.app" target="_blank" rel="noopener">Try it ↗</a>
+        </div>
+      </article>
+
+      <article class="card">
+        <span class="rail" style="background:var(--teal)"></span>
+        <div class="card-head">
+          <span class="glyph" style="background:var(--teal)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="4" width="16" height="16" rx="4"/><path d="M9 12l2 2 4-5"/></svg></span>
+          <div>
+            <h3>NexusTask AI</h3>
+            <div class="alt-name"><span class="en">AI 待辦事項助手</span><span class="zh">內建 AI 顧問的待辦清單</span></div>
+          </div>
+        </div>
+        <p>
+          <span class="en"><b>A to-do and project app with a built-in AI advisor.</b> Local-first storage, cloud sync, drag-and-drop planning — your data stays on your device unless you sync it.</span>
+          <span class="zh"><b>內建 AI 顧問的待辦與專案管理。</b>以本地資料為優先、雲端同步、拖曳排程——不同步的話，資料就留在你自己的裝置上。</span>
+        </p>
+        <div class="chips"><span class="chip">Vite</span><span class="chip">React</span><span class="chip">Firebase</span><span class="chip">Capacitor</span></div>
+        <div class="card-foot">
+          <span class="pill pill-live">Live</span>
+          <a class="golive" href="https://nexustask-ai.vercel.app" target="_blank" rel="noopener">nexustask-ai.vercel.app ↗</a>
+        </div>
+      </article>
+
+      <article class="card">
+        <span class="rail" style="background:var(--indigo)"></span>
+        <div class="card-head">
+          <span class="glyph" style="background:var(--indigo)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.5 14.5A8.5 8.5 0 0 1 9.5 3.5a8.5 8.5 0 1 0 11 11z"/></svg></span>
+          <div>
+            <h3>Sleep Master</h3>
+            <div class="alt-name"><span class="en">睡眠大師 · Restwave</span><span class="zh">幫你把睡覺這件事做到最好</span></div>
+          </div>
+        </div>
+        <p>
+          <span class="en"><b>Our flagship, in late development.</b> A native Android app that listens through the night for snoring and movement, turns the data into weekly reports, and plans AI-guided bedtime coaching as its subscription core.</span>
+          <span class="zh"><b>我們的旗艦產品，開發後期。</b>原生 Android 應用，整夜偵測打鼾與翻身、彙整成週報，並規劃以 AI 睡眠引導作為訂閱制核心。</span>
+        </p>
+        <div class="chips"><span class="chip">Expo</span><span class="chip">React Native</span><span class="chip">Firebase</span><span class="chip">Cloudflare Workers</span></div>
+        <div class="card-foot">
+          <span class="pill pill-dev">In development · Android</span>
+          <span class="devnote"><span class="en">Google Play next</span><span class="zh">下一步：上架 Google Play</span></span>
+        </div>
+      </article>
+
+    </div>
+  </section>
+
+  <div class="wrap"><hr class="rule"></div>
+
+  <!-- ================= STUDIO ================= -->
+  <section id="studio" class="wrap">
+    <p class="kicker"><span class="en">How a team of one ships</span><span class="zh">一人團隊怎麼出貨</span></p>
+    <h2>
+      <span class="en">AI-native from the first commit</span>
+      <span class="zh">從第一行程式碼起就是 AI 原生</span>
+    </h2>
+    <p class="section-note">
+      <span class="en">Every KOOKKO product is designed and coded by one founder working side by side with AI agents. That is what makes a four-product portfolio possible for a solo studio.</span>
+      <span class="zh">KOOKKO 的每一款產品，都由創辦人與 AI 代理協同完成設計與開發。這正是一人工作室能同時維持四款產品的原因。</span>
+    </p>
+    <div class="studio-grid">
+      <div class="studio-item">
+        <span class="glyph"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l1.8 4.6L18 9.4l-4.2 1.8L12 16l-1.8-4.8L6 9.4l4.2-1.8z"/><path d="M18.5 15.5l.9 2.1 2.1.9-2.1.9-.9 2.1-.9-2.1-2.1-.9 2.1-.9z"/></svg></span>
+        <h3><span class="en">Design with AI</span><span class="zh">用 AI 設計</span></h3>
+        <p><span class="en">Research, specs and UX drafts are produced with AI as the daily sparring partner, then reviewed line by line by the founder.</span><span class="zh">市場研究、規格文件與互動草稿都由 AI 協同產出，再經創辦人逐段審查定稿。</span></p>
+      </div>
+      <div class="studio-item">
+        <span class="glyph"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 8l-4 4 4 4"/><path d="M16 8l4 4-4 4"/><path d="M13 5l-2 14"/></svg></span>
+        <h3><span class="en">Build with AI</span><span class="zh">用 AI 開發</span></h3>
+        <p><span class="en">Claude is embedded in the whole engineering loop: coding, regression suites, documentation, and release checks.</span><span class="zh">Claude 深入整個工程迴圈：開發、回歸測試、文件撰寫與發版檢查都有它參與。</span></p>
+      </div>
+      <div class="studio-item">
+        <span class="glyph"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 18L10 12l3.5 3L20 8"/><path d="M15 8h5v5"/></svg></span>
+        <h3><span class="en">Sell with AI</span><span class="zh">靠 AI 營收</span></h3>
+        <p><span class="en">AI is the product, not a gimmick: billing is built around AI features — subscriptions, credits, and freemium tiers.</span><span class="zh">AI 是產品本身而非行銷口號：收費設計圍繞 AI 功能——訂閱制、點數與免費增值分級。</span></p>
+      </div>
+    </div>
+  </section>
+
+  <div class="wrap"><hr class="rule"></div>
+
+  <!-- ================= ROADMAP ================= -->
+  <section id="roadmap" class="wrap">
+    <p class="kicker"><span class="en">What's next</span><span class="zh">後續計畫</span></p>
+    <h2><span class="en">The road ahead</span><span class="zh">接下來的位置</span></h2>
+    <div class="roadmap">
+      <div class="step">
+        <span class="when"><span class="en">Now</span><span class="zh">目前</span></span>
+        <p><span class="en"><b>Sleep Master, v1.72 on Android.</b> Finishing reliability work and night-sensing accuracy, then Google Play submission with its subscription launch.</span><span class="zh"><b>睡眠大師 v1.72（Android）。</b>正在收斂穩定性與夜間感測準確度，接著送件 Google Play，並同步啟動訂閱制。</span></p>
+      </div>
+      <div class="step">
+        <span class="when"><span class="en">Next</span><span class="zh">接著</span></span>
+        <p><span class="en"><b>StickerAI Motion.</b> Animated LINE stickers (APNG) generated from a single prompt — the pipeline is already prototyped.</span><span class="zh"><b>StickerAI Motion。</b>一句提示詞就能產生動態 LINE 貼圖（APNG），生成管線已完成原型驗證。</span></p>
+      </div>
+      <div class="step">
+        <span class="when"><span class="en">Then</span><span class="zh">再來</span></span>
+        <p><span class="en"><b>Grow the paying base.</b> Convert free users across the live products into subscription revenue, and fold more AI features into each.</span><span class="zh"><b>擴大付費基礎。</b>把上線產品的免費用戶轉為訂閱收入，並持續為每款產品加入新的 AI 功能。</span></p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= CONTACT ================= -->
+  <section id="contact" class="wrap" style="padding-bottom: 30px;">
+    <div class="contact-box">
+      <h2><span class="en">Say hello 👋</span><span class="zh">跟我們說嗨 👋</span></h2>
+      <p>
+        <span class="en">Partnerships, product feedback, or press — one inbox, answered personally by the founder.</span>
+        <span class="zh">合作、產品建議或媒體詢問，都寄到這一個信箱，由創辦人親自回覆。</span>
+      </p>
+      <div class="mailrow">
+        <a id="mail" href="mailto:kookko123432@karaokeparty.vip">kookko123432@karaokeparty.vip</a>
+        <button class="copybtn" id="copy-mail" type="button"><span class="en">Copy</span><span class="zh">複製</span></button>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <div class="wrap footbar">
+    <span>© 2025–2026 KOOKKO</span>
+    <a href="https://github.com/kookko123432-lang" target="_blank" rel="noopener">GitHub ↗</a>
+    <span class="cc"><span class="en">Built by one person, with a lot of help from AI.</span><span class="zh">由一個人打造，並有大量 AI 參與。</span></span>
+  </div>
+</footer>
+
+<script>
+(function () {
+  // ---- language toggle ----
+  var root = document.documentElement;
+  var btnEn = document.getElementById('btn-en');
+  var btnZh = document.getElementById('btn-zh');
+  function setLang(lang) {
+    root.setAttribute('data-lang', lang);
+    root.setAttribute('lang', lang === 'zh' ? 'zh-Hant' : 'en');
+    btnEn.setAttribute('aria-pressed', String(lang === 'en'));
+    btnZh.setAttribute('aria-pressed', String(lang === 'zh'));
+    try { localStorage.setItem('kookko-lang', lang); } catch (e) { /* storage unavailable — page still works */ }
+  }
+  btnEn.addEventListener('click', function () { setLang('en'); });
+  btnZh.addEventListener('click', function () { setLang('zh'); });
+  try {
+    var saved = localStorage.getItem('kookko-lang');
+    if (saved === 'zh' || saved === 'en') setLang(saved);
+  } catch (e) { /* first frame defaults to EN */ }
+
+  // ---- copy email ----
+  var copyBtn = document.getElementById('copy-mail');
+  var mailEl = document.getElementById('mail');
+  var EMAIL = 'kookko123432@karaokeparty.vip';
+  var restoreTimer = null;
+  function flash(text) {
+    copyBtn.textContent = text;
+    if (restoreTimer) clearTimeout(restoreTimer);
+    restoreTimer = setTimeout(function () {
+      copyBtn.innerHTML = '<span class="en">Copy</span><span class="zh">複製</span>';
+    }, 1600);
+  }
+  function legacyCopy() {
+    var ta = document.createElement('textarea');
+    ta.value = EMAIL;
+    ta.style.position = 'fixed'; ta.style.opacity = '0';
+    document.body.appendChild(ta);
+    ta.select();
+    var ok = false;
+    try { ok = document.execCommand('copy'); } catch (e) { ok = false; }
+    document.body.removeChild(ta);
+    if (ok) { flash('✓'); }
+    else {
+      var r = document.createRange();
+      r.selectNodeContents(mailEl);
+      var sel = window.getSelection();
+      sel.removeAllRanges(); sel.addRange(r);
+      flash('⌘C');
+    }
+  }
+  copyBtn.addEventListener('click', function () {
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(EMAIL).then(function () { flash('✓'); }, legacyCopy);
+    } else { legacyCopy(); }
+  });
+})();
+</script>
+</body>
+</html>
